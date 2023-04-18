@@ -12,7 +12,7 @@ body {
   justify-content: center;
   flex-direction: column;
 
-  width: 321px;
+  width: 250px;
   height: 487px;
 
   background: #1A001C;
@@ -21,17 +21,22 @@ body {
 
 main {
   background: #250327;
-  width: 300px;
+  width: 230px;
   height: 416px;
   
   margin: 2px 0 2px 0;
+}
+
+#logo {
+  height: 32px;
+  margin-top: 8px;
 }
 
 .main-title {
   font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
-  font-size: 8px;
+  font-size: 13px;
   line-height: 10px;
 
   color: #F4F4F4;
@@ -39,12 +44,12 @@ main {
 }
 
 #themes {
-    max-height: 190px;
+    max-height: 370px;
     overflow-y: scroll;
 }
 
 #themes::-webkit-scrollbar {
-  width: 1px;
+  width: 2px;
 }
 
 #themes::-webkit-scrollbar-track {
@@ -81,14 +86,15 @@ main {
   font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
-  font-size: 8px;
+  font-size: 11px;
   line-height: 10px;
   color: #FFFFFF;
 }
 
 .theme-title-icon {
+  height: 12px;
   position: relative;
-  left: 67px;
+  left: 75px;
 }
 
 .theme-title-icon:hover {
@@ -96,7 +102,7 @@ main {
 }
 
 .theme-img {
-  width: 167px;
+  max-width: 200px;
   height: 81px;
   margin: 2px 8px 2px 8px;
 }
@@ -116,7 +122,12 @@ main {
 
 .theme-button-title {
   font-weight: 400;
-  font-size: 8px;
+  font-size: 9px;
   color: #FFFFFF;
   padding: 3px 12px 3px 12px;
+}
+
+#github-icon {
+  height: 30px;
+  margin-bottom: 5px;
 }
