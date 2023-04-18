@@ -1,14 +1,3 @@
-
-import getThemes from "./themes.js";
-
-chrome.storage.onChanged.addListener((changes, namespace) => {
-  for (const [key, { oldValue, newValue }] of Object.entries(changes)) {
-    if (key === "chatStyle") {
-      changeStyle(newValue);
-    }
-  }
-});
-
 const setChatStyle = (newStyle) => {
   chrome.storage.sync.set({
     chatStyle: {
@@ -24,40 +13,22 @@ function getChatStyle() {
       if (chatStyle) {
         resolve(chatStyle);
       }
-      reject(new Error(`Failed to read chatStyle`));
+      resolve({
+        enabled: true,
+        cssFile: "aquarium.css"
+      });
     });
   });
 }
 
-let styleLink = null;
-const changeStyle = (newStyle) => {
-  if (newStyle.cssFile === "none" || !newStyle.enabled) {
-    try {
-      document.getElementsByTagName("head")[0].removeChild(styleLink);
-    } catch (er) {
-      console.log(er)
-    }
-    styleLink = null;
-    return;
-  }
-
-  styleLink = document.createElement("link");
-  styleLink.href = chrome.runtime.getURL("../themes/" + newStyle.cssFile);
-  styleLink.type = "text/css";
-  styleLink.rel = "stylesheet";
-
-  document.getElementsByTagName("head")[0].appendChild(styleLink);
-}
-
 async function loadThemeBoxes() {
   const ul = document.getElementById('themes');
-  ul.innerHTML = '';
+  if(ul) ul.innerHTML = '';
 
   const themes = await getThemes();
   const chatStyleData = await getChatStyle();
 
   themes.forEach(theme => {
-
     const li = document.createElement('li');
     li.dataset.filename = theme.filename;
     li.classList.add('theme-box');
@@ -102,7 +73,7 @@ Credits: ${theme.data.credits}
     button.addEventListener('click', (e) => {
       if (e.target.textContent === 'Remove this theme!') {
         setChatStyle({
-          enabled: true,
+          enabled: false,
           cssFile: 'none'
         });
 
@@ -165,4 +136,108 @@ function openPopup(url) {
       setTimeout(() => chrome.runtime.sendMessage({ url: url, tabId: window.tabs[0].id }), 100);
     });
   };
+}
+
+//Load themes
+async function getDirectoryEntry(directoryName) {
+  return new Promise((resolve, reject) => {
+    chrome.runtime.getPackageDirectoryEntry(directoryEntry => {
+      if (directoryEntry) {
+        directoryEntry.getDirectory(directoryName, {}, directoryEntry => {
+          if (directoryEntry) {
+            resolve(directoryEntry);
+          } else {
+            reject(new Error(`Failed to get directory entry for ${directoryName}`));
+          }
+        });
+      } else {
+        reject(new Error('Failed to get directory entry for extension.'));
+      }
+    });
+  });
+}
+
+async function readDirectoryEntries(directoryEntry) {
+  return new Promise((resolve, reject) => {
+    directoryEntry.createReader().readEntries(entries => {
+      const files = entries
+        .filter(entry => entry.isFile && entry.name.endsWith('.css'))
+        .map(entry => entry.name);
+
+      resolve(files);
+    }, error => {
+      reject(new Error(`Failed to read directory entries: ${error}`));
+    });
+  });
+}
+
+async function readCssFile(directoryEntry, filename) {
+  return new Promise((resolve, reject) => {
+    directoryEntry.getFile(filename, {}, fileEntry => {
+      fileEntry.file(file => {
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+          const text = reader.result;
+
+          const header = {};
+          let styles = '';
+
+          const headerEndIndex = text.indexOf('*/') - 2;
+          const headerText = text.substring(2, headerEndIndex).trim();
+
+          headerText.split('\n').forEach(line => {
+            const colonIndex = line.indexOf(':');
+            const key = line.substring(0, colonIndex).trim().toLowerCase();
+            const value = line.substring(colonIndex + 1).trim();
+            header[key] = value;
+          });
+
+          styles = text.substring(headerEndIndex + 1).trim();
+
+          resolve({
+            header,
+            styles
+          });
+        };
+
+        reader.onerror = () => {
+          reject(new Error(`Failed to read file ${filename}`));
+        };
+
+        reader.readAsText(file);
+      });
+    }, error => {
+      reject(new Error(`Failed to get file entry for ${filename}: ${error}`));
+    });
+  });
+}
+
+async function getThemes() {
+  const themesDirectoryName = 'themes/';
+
+  try {
+    const themesDirectoryEntry = await getDirectoryEntry(themesDirectoryName);
+    const cssFileNames = await readDirectoryEntries(themesDirectoryEntry);
+
+    const cssFiles = cssFileNames.reduce(async (acc, filename) => {
+      const result = await acc;
+      try {
+        const cssFile = await readCssFile(themesDirectoryEntry, filename);
+        const data = {
+          ...cssFile.header,
+          styles: cssFile.styles
+        };
+        result.push({filename, data});
+      } catch (error) {
+        console.error(`Error loading CSS file ${filename}: ${error}`);
+      }
+      return result;
+    }, []);
+
+    return cssFiles;
+  } catch (error) {
+    console.error(`Error loading CSS files: ${error}`);
+    return [];
+  }
 }
