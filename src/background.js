@@ -7,7 +7,6 @@ window.addEventListener('load', async () => {
   
   if (chatStyle) {
     changeStyle(chatStyle);
-    console.log('apliquei o estilo: ' + chatStyle);
   }
 });
 
@@ -15,7 +14,6 @@ const changeStyle = (newStyle) => {
   let styleLink = null;
 
   if (newStyle.cssFile === "none" || !newStyle.enabled) {
-    console.log('preciso remover o estilo')
     removeChatStyleTag();
     return;
   }
