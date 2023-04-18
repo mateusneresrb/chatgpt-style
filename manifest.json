@@ -9,25 +9,26 @@
       "default_icon": "src/assets/icon.png"
   },
   "permissions": [
-      "storage"
+      "storage",
+      "windows"
   ],
   "web_accessible_resources": [
       {
           "resources": [
-              "themes/*"
+              "themes/*", "src/popup.html"
           ],
           "matches": [
-              "https://chat.openai.com/*"
+              "<all_urls>"
           ]
       }
   ],
   "content_scripts": [
       {
           "js": [
-              "src/script.js"
+              "src/script.js", "src/popup.js"
           ],
           "matches": [
-              "https://chat.openai.com/*"
+            "<all_urls>"
           ]
       }
   ]
