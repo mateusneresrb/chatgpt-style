@@ -4,14 +4,19 @@
     "description": "A styles and background change to chat gpt website",
     "manifest_version": 3,
     "author": "contato@mateusneres.dev",
-    "action": {
-        "default_popup": "src/index.html",
-        "default_icon": "src/assets/icon.png"
-    },
     "homepage_url": "https://github.com/mateusneresrb/chatgpt-style",
+    "action": {
+        "default_popup": "src/index.html"
+    },
     "permissions": [
         "storage"
     ],
+    "icons": {
+        "16": "src/assets/icon-16.png",
+        "32": "src/assets/icon-32.png",
+        "48": "src/assets/icon-48.png",
+        "128": "src/assets/icon-128.png"
+    },
     "web_accessible_resources": [
         {
             "resources": [
