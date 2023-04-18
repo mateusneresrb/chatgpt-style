@@ -1,49 +1,102 @@
-export async function getThemes() {
-  var link = document.createElement("link");
-  link.href = "../themes/";
+async function getDirectoryEntry(directoryName) {
+  return new Promise((resolve, reject) => {
+    chrome.runtime.getPackageDirectoryEntry(directoryEntry => {
+      if (directoryEntry) {
+        directoryEntry.getDirectory(directoryName, {}, directoryEntry => {
+          if (directoryEntry) {
+            resolve(directoryEntry);
+          } else {
+            reject(new Error(`Failed to get directory entry for ${directoryName}`));
+          }
+        });
+      } else {
+        reject(new Error('Failed to get directory entry for extension.'));
+      }
+    });
+  });
+}
+
+async function readDirectoryEntries(directoryEntry) {
+  return new Promise((resolve, reject) => {
+    directoryEntry.createReader().readEntries(entries => {
+      const files = entries
+        .filter(entry => entry.isFile && entry.name.endsWith('.css'))
+        .map(entry => entry.name);
+
+      resolve(files);
+    }, error => {
+      reject(new Error(`Failed to read directory entries: ${error}`));
+    });
+  });
+}
+
+async function readCssFile(directoryEntry, filename) {
+  return new Promise((resolve, reject) => {
+    directoryEntry.getFile(filename, {}, fileEntry => {
+      fileEntry.file(file => {
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+          const text = reader.result;
+
+          const header = {};
+          let styles = '';
+
+          const headerEndIndex = text.indexOf('*/') - 2;
+          const headerText = text.substring(2, headerEndIndex).trim();
+
+          headerText.split('\n').forEach(line => {
+            const colonIndex = line.indexOf(':');
+            const key = line.substring(0, colonIndex).trim().toLowerCase();
+            const value = line.substring(colonIndex + 1).trim();
+            header[key] = value;
+          });
+
+          styles = text.substring(headerEndIndex + 1).trim();
+
+          resolve({
+            header,
+            styles
+          });
+        };
+
+        reader.onerror = () => {
+          reject(new Error(`Failed to read file ${filename}`));
+        };
+
+        reader.readAsText(file);
+      });
+    }, error => {
+      reject(new Error(`Failed to get file entry for ${filename}: ${error}`));
+    });
+  });
+}
+
+export default async function getThemes() {
+  const themesDirectoryName = 'themes/';
 
   try {
-    const response = await fetch(link.href);
-    const text = await response.text();
-    
-    var parser = new DOMParser();
-    var htmlDocument = parser.parseFromString(text, 'text/html');
-    var files = Array.from(htmlDocument.querySelectorAll('a'))
-      .map(a => a.textContent.trim())
-      .filter(a => a && a.endsWith('.css'));
+    const themesDirectoryEntry = await getDirectoryEntry(themesDirectoryName);
+    const cssFileNames = await readDirectoryEntries(themesDirectoryEntry);
 
-    var cssFiles = {};
-
-    for (const file of files) {
+    const cssFiles = cssFileNames.reduce(async (acc, filename) => {
+      const result = await acc;
       try {
-        const response = await fetch(link.href + file);
-        const text = await response.text();
-
-        var header = {};
-        var styles = "";
-
-        var headerEndIndex = text.indexOf('*/') -2;
-        var headerText = text.substring(2, headerEndIndex).trim();
-
-        headerText.split('\n').forEach(function(line) {
-          var colonIndex = line.indexOf(':');
-          var key = line.substring(0, colonIndex).trim();
-          var value = line.substring(colonIndex + 1).trim();
-          header[key] = value;
-        });
-
-        styles = text.substring(headerEndIndex + 1).trim();
-
-        cssFiles[file] = {
-          "header": header,
-          "styles": styles
+        const cssFile = await readCssFile(themesDirectoryEntry, filename);
+        const data = {
+          ...cssFile.header,
+          styles: cssFile.styles
         };
+        result.push({filename, data});
       } catch (error) {
-        console.error(`Erro ao carregar o arquivo ${file}: ${error}`);
+        console.error(`Error loading CSS file ${filename}: ${error}`);
       }
-    }
+      return result;
+    }, []);
 
+    return cssFiles;
   } catch (error) {
-    console.error(`Erro ao carregar a lista de arquivos CSS: ${error}`);
+    console.error(`Error loading CSS files: ${error}`);
+    return [];
   }
 }
