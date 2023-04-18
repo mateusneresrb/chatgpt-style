@@ -1,35 +1,35 @@
 {
     "name": "ChatGPT-Style",
-    "version": "0.0.0",
+    "version": "1.0",
     "description": "A styles and background change to chat gpt website",
     "manifest_version": 3,
-    "author": "Mateus Neres",
+    "author": "contato@mateusneres.dev",
     "action": {
-      "default_popup": "src/index.html",
-      "default_icon": "src/assets/icon.png"
-  },
-  "permissions": [
-      "storage",
-      "windows"
-  ],
-  "web_accessible_resources": [
-      {
-          "resources": [
-              "themes/*", "src/popup.html"
-          ],
-          "matches": [
-              "<all_urls>"
-          ]
-      }
-  ],
-  "content_scripts": [
-      {
-          "js": [
-              "src/script.js", "src/popup.js"
-          ],
-          "matches": [
-            "<all_urls>"
-        ]
-      }
-  ]
+        "default_popup": "src/index.html",
+        "default_icon": "src/assets/icon.png"
+    },
+    "homepage_url": "https://github.com/mateusneresrb/chatgpt-style",
+    "permissions": [
+        "storage"
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "themes/*"
+            ],
+            "matches": [
+                "https://chat.openai.com/*"
+            ]
+        }
+    ],
+    "content_scripts": [
+        {
+            "js": [
+                "src/background.js"
+            ],
+            "matches": [
+                "https://chat.openai.com/*"
+            ]
+        }
+    ]
 }
