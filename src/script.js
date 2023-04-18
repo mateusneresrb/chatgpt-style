@@ -58,13 +58,15 @@ Credits: ${theme.data.credits}
     const themeImg = document.createElement('img');
     themeImg.src = theme.data.illustration;
     themeImg.title = 'Click to view!';
-    themeImg.alt = 'Theme image';
+    themeImg.alt = theme.data.name;
     themeImg.classList.add('theme-img');
     themeImg.loading = 'lazy';
 
     themeImg.addEventListener('click', (e) => {
       const url = e.target.src;
-      openPopup(url);
+      const themeName = e.target.alt;
+      
+      openPopup(url, themeName);
     });
 
     const button = document.createElement('button');
@@ -112,7 +114,7 @@ Credits: ${theme.data.credits}
 loadThemeBoxes();
 
 //Open image popup
-function openPopup(url) {
+function openPopup(url, title) {
   let img = new Image();
   img.src = url;
   img.onload = function () {
@@ -133,7 +135,7 @@ function openPopup(url) {
       left: left,
       top: top
     }, (window) => {
-      setTimeout(() => chrome.runtime.sendMessage({ url: url, tabId: window.tabs[0].id }), 100);
+      setTimeout(() => chrome.runtime.sendMessage({ url: url, title: title, tabId: window.tabs[0].id }), 100);
     });
   };
 }
