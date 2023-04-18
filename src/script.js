@@ -65,7 +65,7 @@ Credits: ${theme.data.credits}
     themeImg.addEventListener('click', (e) => {
       const url = e.target.src;
       const themeName = e.target.alt;
-      
+
       openPopup(url, themeName);
     });
 
@@ -135,7 +135,7 @@ function openPopup(url, title) {
       left: left,
       top: top
     }, (window) => {
-      setTimeout(() => chrome.runtime.sendMessage({ url: url, title: title, tabId: window.tabs[0].id }), 100);
+      setTimeout(() => chrome.runtime.sendMessage({ url: url, title: title, tabId: window.tabs[0].id }), 300);
     });
   };
 }
