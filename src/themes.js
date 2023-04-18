@@ -1,4 +1,4 @@
-async function getThemes() {
+export async function getThemes() {
   var link = document.createElement("link");
   link.href = "../themes/";
 
@@ -43,10 +43,7 @@ async function getThemes() {
       }
     }
 
-    console.log(cssFiles);
   } catch (error) {
     console.error(`Erro ao carregar a lista de arquivos CSS: ${error}`);
   }
 }
-
-export { getThemes };
