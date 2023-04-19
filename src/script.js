@@ -15,7 +15,7 @@ function getChatStyle() {
       }
       resolve({
         enabled: true,
-        cssFile: "aquarium.css"
+        cssFile: "business.css"
       });
     });
   });
