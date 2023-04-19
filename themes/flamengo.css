@@ -1,0 +1,146 @@
+/* 
+Name: Flamengo
+Description: A custom style by theme aquarium to ChatGPT Styles
+Collaborator: Mateus Neres
+Credits: https://github.com/mateusneresrb/
+Illustration: https://i.imgur.com/1vF5XP2.png
+*/
+
+/* Initial background container */
+div.items-center, #__next > div.overflow-hidden.w-full.h-full.relative.flex > div.flex.h-full.max-w-full.flex-1.flex-col > main > div.flex-1.overflow-hidden > div {
+  background: #000000!important;
+}
+
+#__next > div.overflow-hidden.w-full.h-full.relative.flex > div.flex.h-full.max-w-full.flex-1.flex-col > main > div.flex-1.overflow-hidden > div::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("https://ogimg.infoglobo.com.br/in/20273152-80c-5df/FT1086A/2013_667858657-2013112796509.jpg_20131129.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 15%;
+}
+
+/* SideBar */
+nav.h-full {
+  background: #000000;
+}
+
+/* Chat area */
+div.group.w-full.bg-gray-50{
+   background: #500007!important;
+}
+
+div.group.w-full.text-gray-800 {
+   background: #0E0E0E;
+}
+
+/* Form area */
+div.border-t {
+   background: #000000!important;
+}
+
+div.w-full.h-32 {
+   background: #000000!important;
+}
+
+/* chat icon */
+div.p-1.rounded-sm.items-center {
+   background-color: none !important;
+}
+
+/* Table */
+div.items-center table tr,
+table thead,
+table th,
+table td {
+   color: #18c6e1;
+   border-color: #18c6e1;
+}
+
+.prose :where(thead th):not(:where([class~=not-prose] *)) {
+   color: #2cb1c7 !important;
+}
+
+/* Code */
+pre div.flex.items-center.text-xs {
+   background: #1f4366;
+}
+
+pre div.p-4.overflow-y-auto {
+   background: #141414;
+}
+
+/* phrases when explaining code */
+.prose :where(code):not(:where([class~=not-prose] *)) {
+   color: #2cb1c7 !important;
+}
+
+.prose:where(code):not(:where([class~=not-prose] *)) {
+   color: #2cb1c7 !important;
+}
+
+/* Some texts */
+a.text-sm,
+.text-sm {
+   color: #fff;
+   font-size: 1rem;
+}
+
+blockquote,
+dd,
+dl,
+fieldset,
+figure,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+p,
+pre,
+button.text-gray-500 {
+   color: #fff
+}
+
+.markdown ol li,
+.markdown ol li>p,
+.markdown ol ol,
+.markdown ol ul,
+.markdown ul li,
+.markdown ul li>p,
+.markdown ul ol,
+.markdown ul ul {
+   color: #fff
+}
+
+/* Others */
+div.absolute.inset-y-0.right-0.w-8.z-10{
+   display: none!important;
+}
+
+nav.h-full {
+   border-right: 1px solid;
+}
+
+.fade-out {
+   opacity: 0;
+}
+
+text-center,
+li.p-3,
+div.pl-3,
+button.rounded-md,
+button.rounded-full {
+	border: red 1px solid;
+}
+
+div.items-start.text-center {
+   z-index: 10;
+}
