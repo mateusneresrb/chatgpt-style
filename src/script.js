@@ -165,7 +165,7 @@ async function readCssFile(url) {
           header[key] = value;
         });
 
-        styles = text.substring(headerEndIndex + 1).trim();
+        styles = text.substring(headerEndIndex + 5).trim();
 
         resolve({
           header,
