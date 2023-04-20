@@ -2,7 +2,7 @@
 # ChatGPT-Style
 > This project is an extension for browsers using the chrome engine that aims to customize the style of chatgpt
 
-<img src="https://i.imgur.com/PzfVQow.gif" style="max-width=300px" alt="gif gpt style">
+<img src="https://i.imgur.com/M2ve19T.gif" style="max-width=300px" alt="gif gpt style">
 
 For now we only have a few themes, we count on the help of the community to facilitate the maintenance of the code and make our theme gallery more and more crowded
 
