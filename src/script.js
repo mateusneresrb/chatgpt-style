@@ -13,10 +13,11 @@ function getChatStyle() {
       if (chatStyle) {
         resolve(chatStyle);
       }
-      resolve({
-        enabled: true,
-        cssFile: "aquarium.css"
-      });
+      
+      const chatStyleData = { enabled: true, cssFile: "business.css" };
+      
+      setChatStyle(chatStyleData);
+      resolve(chatStyleData);
     });
   });
 }
@@ -118,14 +119,14 @@ function openPopup(url, title) {
   let img = new Image();
   img.src = url;
   img.onload = function () {
-    const width = this.width;
-    const height = this.height;
+    const width = 650;
+    const height = 300;
 
     const popupWidth = width + 50;
     const popupHeight = height + 50;
 
-    const left = (screen.width / 2) - (popupWidth / 2);
-    const top = (screen.height / 2) - (popupHeight / 2);
+    const left = parseInt((screen.width / 2) - (popupWidth / 2));
+    const top = parseInt((screen.height / 2) - (popupHeight / 2));
 
     chrome.windows.create({
       url: chrome.runtime.getURL("src/popup.html"),
