@@ -13,10 +13,11 @@ function getChatStyle() {
       if (chatStyle) {
         resolve(chatStyle);
       }
-      resolve({
-        enabled: true,
-        cssFile: "business.css"
-      });
+      
+      const chatStyleData = { enabled: true, cssFile: "business.css" };
+      
+      setChatStyle(chatStyleData);
+      resolve(chatStyleData);
     });
   });
 }
