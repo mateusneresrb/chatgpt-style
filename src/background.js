@@ -4,28 +4,24 @@ window.addEventListener('load', async () => {
       resolve(result.chatStyle);
     });
   });
-  
+
   if (chatStyle) {
     changeStyle(chatStyle);
   }
 });
 
 const changeStyle = (newStyle) => {
-  let styleLink = null;
-
   if (newStyle.cssFile === "none" || !newStyle.enabled) {
     removeChatStyleTag();
     return;
   }
 
   removeChatStyleTag();
-  styleLink = document.createElement("link");
-  styleLink.id = "chatgpt-style";
-  styleLink.href = chrome.runtime.getURL("../themes/" + newStyle.cssFile);
-  styleLink.type = "text/css";
-  styleLink.rel = "stylesheet";
+  const style = document.createElement('style');
+  style.id = "chatgpt-style";
+  style.textContent = newStyle.styles;
 
-  document.getElementsByTagName("head")[0].appendChild(styleLink);
+  document.getElementsByTagName("head")[0].appendChild(style);
 }
 
 function removeChatStyleTag() {
@@ -35,7 +31,7 @@ function removeChatStyleTag() {
   }
 }
 
-function storageListener(){
+function storageListener() {
   chrome.storage.onChanged.addListener((changes, namespace) => {
     for (const [key, { oldValue, newValue }] of Object.entries(changes)) {
       if (key === "chatStyle") {

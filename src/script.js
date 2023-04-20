@@ -1,21 +1,26 @@
-const setChatStyle = (newStyle) => {
+const setChatStyle = async (newStyle) => {
+  const themes = await getThemes();
+  const theme = themes.find(theme => theme.filename.includes(newStyle.cssFile));
+
+  const themeStyles = newStyle.cssFile !== 'none' ? theme.data.styles : '{}';
   chrome.storage.sync.set({
     chatStyle: {
       enabled: newStyle.enabled,
-      cssFile: newStyle.cssFile
-    }
-  });
+      cssFile: newStyle.cssFile,
+      styles: themeStyles
+  }});
 }
 
 function getChatStyle() {
   return new Promise((resolve, reject) => {
-    chrome.storage.sync.get("chatStyle", ({ chatStyle} ) => {
+    chrome.storage.sync.get("chatStyle", ({ chatStyle }) => {
       if (chatStyle) {
         resolve(chatStyle);
+        return;
       }
-      
+
       const chatStyleData = { enabled: true, cssFile: "business.css" };
-      
+
       setChatStyle(chatStyleData);
       resolve(chatStyleData);
     });
@@ -24,7 +29,7 @@ function getChatStyle() {
 
 async function loadThemeBoxes() {
   const ul = document.getElementById('themes');
-  if(ul) ul.innerHTML = '';
+  if (ul) ul.innerHTML = '';
 
   const themes = await getThemes();
   const chatStyleData = await getChatStyle();
@@ -142,102 +147,68 @@ function openPopup(url, title) {
 }
 
 //Load themes
-async function getDirectoryEntry(directoryName) {
+async function readCssFile(url) {
   return new Promise((resolve, reject) => {
-    chrome.runtime.getPackageDirectoryEntry(directoryEntry => {
-      if (directoryEntry) {
-        directoryEntry.getDirectory(directoryName, {}, directoryEntry => {
-          if (directoryEntry) {
-            resolve(directoryEntry);
-          } else {
-            reject(new Error(`Failed to get directory entry for ${directoryName}`));
-          }
+    fetch(url)
+      .then(response => response.text())
+      .then(text => {
+        const header = {};
+        let styles = '';
+
+        const headerEndIndex = text.indexOf('*/') - 1;
+        const headerText = text.substring(2, headerEndIndex).trim();
+
+        headerText.split('\n').forEach(line => {
+          const colonIndex = line.indexOf(':');
+          const key = line.substring(0, colonIndex).trim().toLowerCase();
+          const value = line.substring(colonIndex + 1).trim();
+          header[key] = value;
         });
-      } else {
-        reject(new Error('Failed to get directory entry for extension.'));
-      }
-    });
-  });
-}
 
-async function readDirectoryEntries(directoryEntry) {
-  return new Promise((resolve, reject) => {
-    directoryEntry.createReader().readEntries(entries => {
-      const files = entries
-        .filter(entry => entry.isFile && entry.name.endsWith('.css'))
-        .map(entry => entry.name);
+        styles = text.substring(headerEndIndex + 1).trim();
 
-      resolve(files);
-    }, error => {
-      reject(new Error(`Failed to read directory entries: ${error}`));
-    });
-  });
-}
-
-async function readCssFile(directoryEntry, filename) {
-  return new Promise((resolve, reject) => {
-    directoryEntry.getFile(filename, {}, fileEntry => {
-      fileEntry.file(file => {
-        const reader = new FileReader();
-
-        reader.onloadend = () => {
-          const text = reader.result;
-
-          const header = {};
-          let styles = '';
-
-          const headerEndIndex = text.indexOf('*/') - 2;
-          const headerText = text.substring(2, headerEndIndex).trim();
-
-          headerText.split('\n').forEach(line => {
-            const colonIndex = line.indexOf(':');
-            const key = line.substring(0, colonIndex).trim().toLowerCase();
-            const value = line.substring(colonIndex + 1).trim();
-            header[key] = value;
-          });
-
-          styles = text.substring(headerEndIndex + 1).trim();
-
-          resolve({
-            header,
-            styles
-          });
-        };
-
-        reader.onerror = () => {
-          reject(new Error(`Failed to read file ${filename}`));
-        };
-
-        reader.readAsText(file);
-      });
-    }, error => {
-      reject(new Error(`Failed to get file entry for ${filename}: ${error}`));
-    });
+        resolve({
+          header,
+          styles
+        });
+      })
+      .catch(error => reject(new Error(`Failed to read CSS file: ${error}`)));
   });
 }
 
 async function getThemes() {
-  const themesDirectoryName = 'themes/';
+  const owner = 'mateusneresrb';
+  const repo = 'chatgpt-style';
+  const path = 'themes';
+
+  const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
 
   try {
-    const themesDirectoryEntry = await getDirectoryEntry(themesDirectoryName);
-    const cssFileNames = await readDirectoryEntries(themesDirectoryEntry);
+    const response = await fetch(url);
+    const data = await response.json();
 
-    const cssFiles = cssFileNames.reduce(async (acc, filename) => {
+    const cssFiles = await data.reduce(async (acc, file) => {
       const result = await acc;
-      try {
-        const cssFile = await readCssFile(themesDirectoryEntry, filename);
-        const data = {
-          ...cssFile.header,
-          styles: cssFile.styles
-        };
-        result.push({filename, data});
-      } catch (error) {
-        console.error(`Error loading CSS file ${filename}: ${error}`);
+
+      if (file.type === 'file' && file.name.endsWith('.css')) {
+        const fileUrl = file.download_url;
+        const fileName = file.name;
+
+        try {
+          const cssFile = await readCssFile(fileUrl);
+          const data = {
+            ...cssFile.header,
+            styles: cssFile.styles
+          };
+
+          result.push({ filename: fileName, data });
+        } catch (error) {
+          console.error(`Error loading CSS file ${fileName}: ${error}`);
+        }
       }
+
       return result;
     }, []);
-
     return cssFiles;
   } catch (error) {
     console.error(`Error loading CSS files: ${error}`);
