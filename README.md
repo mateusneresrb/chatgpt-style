@@ -10,7 +10,7 @@ For now we only have a few themes, we count on the help of the community to faci
 
 Enter the link below and install the extension.
 
-ChatGPT Style: https://github.com/mateusneresrb/chatgpt-style
+ChatGPT Style: https://chrome.google.com/webstore/detail/ooefjbdchgdlfeigfhigjpffppdklnef
 
 ## 🚀 How create a theme ?
 
