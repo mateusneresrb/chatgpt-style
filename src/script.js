@@ -33,6 +33,7 @@ async function loadThemeBoxes() {
 
   const themes = await getThemes();
   const chatStyleData = await getChatStyle();
+  sortThemes(themes, chatStyleData.cssFile);
 
   themes.forEach(theme => {
     const li = document.createElement('li');
@@ -118,6 +119,16 @@ Credits: ${theme.data.credits}
 }
 
 loadThemeBoxes();
+
+//Sort themes
+function sortThemes(themes, activatedFilename) {
+  const index = themes.findIndex(theme => theme.filename === activatedFilename);
+
+  if (index !== -1) {
+    const [removed] = themes.splice(index, 1);
+    themes.unshift(removed);
+  }
+}
 
 //Open image popup
 function openPopup(url, title) {
