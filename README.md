@@ -42,7 +42,7 @@ ChatGPT Style: https://chrome.google.com/webstore/detail/ooefjbdchgdlfeigfhigjpf
     </td>
         <td align="center">
       <a href="https://github.com/GabrielMoreiradeSouza">
-        <img src="hhttps://avatars.githubusercontent.com/u/120267591?s=64&v=4" width="100px;" alt="Foto do Iuri Silva no GitHub"/><br>
+        <img src="https://avatars.githubusercontent.com/u/120267591?s=64&v=4" width="100px;" alt="Foto do Iuri Silva no GitHub"/><br>
         <sub>
           <b>Gabriel Moreira</b>
         </sub>
