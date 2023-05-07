@@ -26,6 +26,8 @@ async function addCustomClasses() {
     const response = await fetch(url);
     const data = await response.json();
 
+    console.log(data)
+
     data.classes.forEach((customClass) => {
       const elements = document.querySelectorAll(customClass.selector);
       elements.forEach((element) => {
@@ -62,7 +64,7 @@ function removeChatStyleTag() {
 
 function storageListener() {
   chrome.storage.onChanged.addListener((changes, namespace) => {
-    for (const [key, { oldValue, newValue }] of Object.entries(changes)) {
+    for (const [key, { newValue }] of Object.entries(changes)) {
       if (key === "chatStyle") {
         changeStyle(newValue);
       }
