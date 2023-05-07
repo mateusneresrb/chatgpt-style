@@ -93,8 +93,8 @@ main {
 
 .theme-title-icon {
   height: 12px;
-  position: relative;
-  left: 75px;
+  position: absolute;
+  right: 25px;
 }
 
 .theme-title-icon:hover {
