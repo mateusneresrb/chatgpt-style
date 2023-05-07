@@ -1,3 +1,7 @@
+const owner = 'mateusneresrb';
+const repo = 'chatgpt-style';
+
+//Load page
 window.addEventListener('load', async () => {
   const chatStyle = await new Promise(resolve => {
     chrome.storage.sync.get("chatStyle", result => {
@@ -13,6 +17,28 @@ window.addEventListener('load', async () => {
   }
 });
 
+//CustomClasses to easy fix on chatgpt update
+async function addCustomClasses() {
+  const path = 'custom-classes.json';
+  const url = `https://raw.githubusercontent.com/${owner}/${repo}/main/${path}`;
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+
+    data.classes.forEach((customClass) => {
+      const elements = document.querySelectorAll(customClass.selector);
+      elements.forEach((element) => {
+        element.classList.add(customClass.name);
+      });
+    });
+  } catch (error) {
+    console.error(`Error loading custom classes: ${error}`);
+  }
+}
+addCustomClasses();
+
+//Change style
 const changeStyle = (newStyle) => {
   if (newStyle.cssFile === "none" || !newStyle.enabled) {
     removeChatStyleTag();
@@ -45,9 +71,8 @@ function storageListener() {
 }
 storageListener();
 
+//Load remote theme
 async function loadRemote(themeName) {
-  const owner = 'mateusneresrb';
-  const repo = 'chatgpt-style';
   const path = 'themes';
 
   const url = `https://raw.githubusercontent.com/${owner}/${repo}/main/${path}/${themeName}`;

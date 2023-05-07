@@ -1,0 +1,8 @@
+{
+  "classes": [
+    {
+      "name": "gptstyle-sidebar",
+      "selector": "nav.h-full"
+    }
+  ]
+}
