@@ -34,7 +34,7 @@ ChatGPT Style: https://chrome.google.com/webstore/detail/ooefjbdchgdlfeigfhigjpf
     </td>
         <td align="center">
       <a href="https://github.com/VictorBren0">
-        <img src="https://avatars.githubusercontent.com/u/87786280&v=4" width="100px;" alt="Foto do Iuri Silva no GitHub"/><br>
+        <img src="https://avatars.githubusercontent.com/u/87786280?&v=4" width="100px;" alt="Foto do Iuri Silva no GitHub"/><br>
         <sub>
           <b>Victor Breno</b>
         </sub>
@@ -42,7 +42,7 @@ ChatGPT Style: https://chrome.google.com/webstore/detail/ooefjbdchgdlfeigfhigjpf
     </td>
         <td align="center">
       <a href="https://github.com/GabrielMoreiradeSouza">
-        <img src="https://avatars.githubusercontent.com/u/120267591&v=4" width="100px;" alt="Foto do Iuri Silva no GitHub"/><br>
+        <img src="https://avatars.githubusercontent.com/u/120267591?&v=4" width="100px;" alt="Foto do Iuri Silva no GitHub"/><br>
         <sub>
           <b>Gabriel Moreira</b>
         </sub>
