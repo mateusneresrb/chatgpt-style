@@ -31,6 +31,10 @@ nav.h-full {
   background: #161311!important;
 }
 
+div.flex.flex-col.gap-2.pb-2.text-gray-100.text-sm a {
+  background: none!important;
+}
+
 /* Chat area */
 div.group.w-full.bg-gray-50{
    background: #504830!important;
