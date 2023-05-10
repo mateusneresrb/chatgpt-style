@@ -2,7 +2,7 @@
 # ChatGPT-Style
 > This project is an extension for browsers using the chrome engine that aims to customize the style of chatgpt
 
-<img src="https://i.imgur.com/PzfVQow.gif" style="max-width=300px" alt="gif gpt style">
+<img src="https://i.imgur.com/M2ve19T.gif" style="max-width=300px" alt="gif gpt style">
 
 For now we only have a few themes, we count on the help of the community to facilitate the maintenance of the code and make our theme gallery more and more crowded
 
@@ -10,7 +10,7 @@ For now we only have a few themes, we count on the help of the community to faci
 
 Enter the link below and install the extension.
 
-ChatGPT Style: https://github.com/mateusneresrb/chatgpt-style
+ChatGPT Style: https://chrome.google.com/webstore/detail/ooefjbdchgdlfeigfhigjpffppdklnef
 
 ## 🚀 How create a theme ?
 
@@ -29,6 +29,22 @@ ChatGPT Style: https://github.com/mateusneresrb/chatgpt-style
         <img src="https://avatars.githubusercontent.com/u/52140952?v=4" width="100px;" alt="Foto do Iuri Silva no GitHub"/><br>
         <sub>
           <b>Mateus Neres</b>
+        </sub>
+      </a>
+    </td>
+        <td align="center">
+      <a href="https://github.com/VictorBren0">
+        <img src="https://avatars.githubusercontent.com/u/87786280?&v=4" width="100px;" alt="Foto do Iuri Silva no GitHub"/><br>
+        <sub>
+          <b>Victor Breno</b>
+        </sub>
+      </a>
+    </td>
+        <td align="center">
+      <a href="https://github.com/GabrielMoreiradeSouza">
+        <img src="https://avatars.githubusercontent.com/u/120267591?&v=4" width="100px;" alt="Foto do Iuri Silva no GitHub"/><br>
+        <sub>
+          <b>Gabriel Moreira</b>
         </sub>
       </a>
     </td>
