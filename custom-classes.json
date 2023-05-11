@@ -2,11 +2,11 @@
   "classes": [
     {
       "name": "gstyle-background",
-      "selector": "#__next > div.overflow-hidden.w-full.h-full.relative.flex.z-0 > div.relative.flex.h-full.max-w-full.flex-1 > div > main > div.flex-1.overflow-hidden > div"
+      "selector": "main > div.flex-1.overflow-hidden > div"
     },
     {
       "name": "gstyle-background-top",
-      "selector": "#__next > div.overflow-hidden.w-full.h-full.relative.flex.z-0 > div.relative.flex.h-full.max-w-full.flex-1 > div > main > div.flex-1.overflow-hidden > div > div > di"
+      "selector": "main > div.flex-1.overflow-hidden > div > div > div"
     },
     {
       "name": "gstyle-background-middle",
@@ -14,7 +14,7 @@
     },
     {
       "name": "gstyle-background-bottom",
-      "selector": "#__next > div.overflow-hidden.w-full.h-full.relative.flex.z-0 > div.relative.flex.h-full.max-w-full.flex-1 > div > main > div.flex-1.overflow-hidden > div > div"
+      "selector": "main > div.flex-1.overflow-hidden > div > div"
     },
     {
       "name": "gstyle-sidebar",
@@ -22,11 +22,11 @@
     },
     {
       "name": "gstyle-sidebar-lastused",
-      "selector": "#__next > div.overflow-hidden.w-full.h-full.relative.flex.z-0 > div.dark.flex-shrink-0.overflow-x-hidden.bg-gray-900 > div > div > div > nav > div.flex-col.flex-1.transition-opacity.duration-500.overflow-y-auto > div > div > span > div > div > div"
+      "selector": "nav > div.flex-col.flex-1.transition-opacity.duration-500.overflow-y-auto > div > div > span > div > div > div"
     },
     {
       "name": "gstyle-sidebar-buttons",
-      "selector": "#__next > div.overflow-hidden.w-full.h-full.relative.flex.z-0 > div.dark.flex-shrink-0.overflow-x-hidden.bg-gray-900 > div > div > div > nav > div.flex-col.flex-1.transition-opacity.duration-500.overflow-y-auto > div > div > span > div > ol > li > a"
+      "selector": "nav > div.flex-col.flex-1.transition-opacity.duration-500.overflow-y-auto > div > div > span > div > ol > li > a"
     },
     {
       "name": "gstyle-chatarea-bot",
