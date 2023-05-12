@@ -99,7 +99,7 @@ async function loadRemote(themeName) {
       header[key] = value;
     });
 
-    styles = cssText.substring(headerEndIndex + 1).trim();
+    styles = cssText.substring(headerEndIndex + 5).trim();
 
     const data = {
       ...header,
