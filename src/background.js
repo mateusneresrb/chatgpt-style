@@ -30,6 +30,9 @@ async function addCustomClasses() {
 
     data.classes.forEach((customClass) => {
       const elements = document.querySelectorAll(customClass.selector);
+      if(elements){
+        console.log(`encontrei: ${customClass}`)
+      }
       elements.forEach((element) => {
         element.classList.add(customClass.name);
       });
@@ -38,7 +41,7 @@ async function addCustomClasses() {
     console.error(`Error loading custom classes: ${error}`);
   }
 }
-addCustomClasses();
+setTimeout(() => addCustomClasses(), 200);
 
 //Change style
 const changeStyle = (newStyle) => {
@@ -96,7 +99,7 @@ async function loadRemote(themeName) {
       header[key] = value;
     });
 
-    styles = cssText.substring(headerEndIndex + 1).trim();
+    styles = cssText.substring(headerEndIndex + 5).trim();
 
     const data = {
       ...header,

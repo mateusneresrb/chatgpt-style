@@ -285,7 +285,7 @@ async function readCssFileLocal(directoryEntry, filename) {
             header[key] = value;
           });
 
-          styles = text.substring(headerEndIndex + 1).trim();
+          styles = text.substring(headerEndIndex + 5).trim();
 
           resolve({
             header,
