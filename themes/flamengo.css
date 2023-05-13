@@ -48,7 +48,7 @@ Illustration: https://i.imgur.com/1vF5XP2.png
 
 /* SideBar: Background buttons */
 .gstyle-sidebar-buttons{
-   background: none;
+   background: none!important;
 }
 
 /* \/ Chat area - BOT*/
