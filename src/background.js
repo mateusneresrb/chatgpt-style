@@ -1,6 +1,3 @@
-const owner = 'mateusneresrb';
-const repo = 'chatgpt-style';
-
 //Load page
 window.addEventListener('load', async () => {
   const chatStyle = await new Promise(resolve => {
@@ -16,29 +13,6 @@ window.addEventListener('load', async () => {
     changeStyle(chatStyle);
   }
 });
-
-//CustomClasses to easy fix on chatgpt update
-async function addCustomClasses() {
-  const path = 'custom-classes.json';
-  const url = `https://raw.githubusercontent.com/${owner}/${repo}/main/${path}`;
-
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
-
-    console.log(data)
-
-    data.classes.forEach((customClass) => {
-      const elements = document.querySelectorAll(customClass.selector);
-      elements.forEach((element) => {
-        element.classList.add(customClass.name);
-      });
-    });
-  } catch (error) {
-    console.error(`Error loading custom classes: ${error}`);
-  }
-}
-addCustomClasses();
 
 //Change style
 const changeStyle = (newStyle) => {
@@ -73,11 +47,15 @@ function storageListener() {
 }
 storageListener();
 
+const owner = 'mateusneresrb';
+const repo = 'chatgpt-style';
+
 //Load remote theme
 async function loadRemote(themeName) {
   const path = 'themes';
 
   const url = `https://raw.githubusercontent.com/${owner}/${repo}/main/${path}/${themeName}`;
+  const classes = await getCustomClasses();
 
   try {
     const response = await fetch(url);
@@ -96,7 +74,13 @@ async function loadRemote(themeName) {
       header[key] = value;
     });
 
-    styles = cssText.substring(headerEndIndex + 1).trim();
+    styles = cssText.substring(headerEndIndex + 5).trim();
+    for (const cssClass of classes) {
+      const newSelector = cssClass.selector;
+      const oldSelector = `.${cssClass.name}`;
+  
+      styles = styles.replace(oldSelector, newSelector);
+    }
 
     const data = {
       ...header,
@@ -110,31 +94,16 @@ async function loadRemote(themeName) {
   }
 }
 
-async function readCssFile(url) {
-  return new Promise((resolve, reject) => {
-    fetch(url)
-      .then(response => response.text())
-      .then(text => {
-        const header = {};
-        let styles = '';
+async function getCustomClasses() {
+  const path = 'custom-classes.json';
+  const url = `https://raw.githubusercontent.com/${owner}/${repo}/main/${path}`;
 
-        const headerEndIndex = text.indexOf('*/') - 1;
-        const headerText = text.substring(2, headerEndIndex).trim();
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
 
-        headerText.split('\n').forEach(line => {
-          const colonIndex = line.indexOf(':');
-          const key = line.substring(0, colonIndex).trim().toLowerCase();
-          const value = line.substring(colonIndex + 1).trim();
-          header[key] = value;
-        });
-
-        styles = text.substring(headerEndIndex + 5).trim();
-
-        resolve({
-          header,
-          styles
-        });
-      })
-      .catch(error => reject(new Error(`Failed to read CSS file: ${error}`)));
-  });
+    return data.classes;
+  } catch (error) {
+    console.error(`Error loading custom classes: ${error}`);
+  }
 }

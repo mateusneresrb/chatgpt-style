@@ -117,7 +117,6 @@ Credits: ${theme.data.credits}
     ul.appendChild(li);
   });
 }
-
 loadThemeBoxes();
 
 //Sort themes
@@ -159,6 +158,8 @@ function openPopup(url, title) {
 
 //Load themes
 async function readCssFile(url) {
+  const classes = await getCustomClasses();
+
   return new Promise((resolve, reject) => {
     fetch(url)
       .then(response => response.text())
@@ -177,6 +178,12 @@ async function readCssFile(url) {
         });
 
         styles = text.substring(headerEndIndex + 5).trim();
+        for (const cssClass of classes) {
+          const newSelector = cssClass.selector;
+          const oldSelector = `.${cssClass.name}`;
+      
+          styles = styles.replace(oldSelector, newSelector);
+        }
 
         resolve({
           header,
@@ -187,13 +194,14 @@ async function readCssFile(url) {
   });
 }
 
+const owner = 'mateusneresrb';
+const repo = 'chatgpt-style';
+
 async function getThemes() {
   if (isDevMode()) {
     return await loadLocalThemes();
   }
 
-  const owner = 'mateusneresrb';
-  const repo = 'chatgpt-style';
   const path = 'themes';
 
   const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
@@ -264,6 +272,8 @@ async function readDirectoryEntries(directoryEntry) {
 }
 
 async function readCssFileLocal(directoryEntry, filename) {
+  const classes = await getCustomClasses();
+
   return new Promise((resolve, reject) => {
     directoryEntry.getFile(filename, {}, fileEntry => {
       fileEntry.file(file => {
@@ -285,7 +295,14 @@ async function readCssFileLocal(directoryEntry, filename) {
             header[key] = value;
           });
 
-          styles = text.substring(headerEndIndex + 1).trim();
+          styles = text.substring(headerEndIndex + 5).trim();
+
+          for (const cssClass of classes) {
+            const newSelector = cssClass.selector;
+            const oldSelector = `.${cssClass.name}`;
+        
+            styles = styles.replace(oldSelector, newSelector);
+          }
 
           resolve({
             header,
@@ -332,6 +349,20 @@ async function loadLocalThemes(){
       console.error(`Error loading CSS files: ${error}`);
       return [];
     }
+}
+
+async function getCustomClasses() {
+  const path = 'custom-classes.json';
+  const url = `https://raw.githubusercontent.com/${owner}/${repo}/main/${path}`;
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+
+    return data.classes;
+  } catch (error) {
+    console.error(`Error loading custom classes: ${error}`);
+  }
 }
 
 function isDevMode() {
