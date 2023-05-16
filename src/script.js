@@ -1,3 +1,6 @@
+const owner = 'mateusneresrb';
+const repo = 'chatgpt-style';
+
 const setChatStyle = async (newStyle) => {
   const themes = await getThemes();
   const theme = themes.find(theme => theme.filename.includes(newStyle.cssFile));
@@ -194,16 +197,12 @@ async function readCssFile(url) {
   });
 }
 
-const owner = 'mateusneresrb';
-const repo = 'chatgpt-style';
-
 async function getThemes() {
   if (isDevMode()) {
     return await loadLocalThemes();
   }
 
   const path = 'themes';
-
   const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
 
   try {
