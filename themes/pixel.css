@@ -6,16 +6,31 @@ Credits: https://github.com/VictorBren0
 Illustration: https://i.imgur.com/nVszv3r.png
 */
 
-/* Initial background container */
+/* background-middle */
 
 div.items-center,
 #__next>div.overflow-hidden.w-full.h-full.relative.flex>div.flex.h-full.max-w-full.flex-1.flex-col>main>div.flex-1.overflow-hidden>div {
    background-color: #6b6b6b !important;
 }
 
+/* background-bottom */
+main > div.flex-1.overflow-hidden > div > div{
+   background-color: #6b6b6b !important;
+
+}
+
 /* SideBar */
 nav.h-full {
    background: #10A37F !important;
+}
+
+/* SideBar button days*/
+.sticky{
+   border: black 2px solid;
+   box-shadow: 5px 5px 2px 1px black;
+   border-radius: 5px;
+   margin-right: 5px;
+   margin-top: 20px;
 }
 
 div.flex.flex-col.gap-2.pb-2.text-gray-100.text-sm a {
