@@ -9,8 +9,10 @@ Illustration: https://i.imgur.com/nVszv3r.png
 /* background-middle */
 
 div.items-center,
-#__next>div.overflow-hidden.w-full.h-full.relative.flex>div.flex.h-full.max-w-full.flex-1.flex-col>main>div.flex-1.overflow-hidden>div {
+#__next > div.overflow-hidden.w-full.h-full.relative.flex.z-0 > div.relative.flex.h-full.max-w-full.flex-1.overflow-hidden > div > main > div.flex-1.overflow-hidden > div > div > div {
    background-color: #6b6b6b !important;
+   display: flex;
+   justify-content: center;
 }
 
 /* background-bottom */
